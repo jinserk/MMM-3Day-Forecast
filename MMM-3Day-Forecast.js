@@ -112,8 +112,10 @@ Module.register('MMM-3Day-Forecast', {
 				// Set up the forecast for three three days
 	      for (var i = 0; i < 3; i++) {
 	        var title = '';
-					var C = '--';
-					var F = '--';
+					var maxC = '--';
+					var maxF = '--';
+					var minC = '--';
+					var minF = '--';
 
 					// Determine which day we are detailing
 	        switch (i) {
@@ -130,9 +132,11 @@ Module.register('MMM-3Day-Forecast', {
 
 					if (this.forecast[i].high !== '--') {
 						if (this.units === 'metric') {
-							C = this.forecast[i].high;
+							maxC = this.forecast[i].high;
+							minC = this.forecast[i].low;
 						} else {
-							F = this.forecast[i].high;
+							maxF = this.forecast[i].high;
+							minF = this.forecast[i].low;
 						}
 					}
 
@@ -165,9 +169,9 @@ Module.register('MMM-3Day-Forecast', {
 					tempCell = document.createElement('td');
 					tempCell.className = 'detailText2';
 					if (this.units === 'metric') {
-	          tempCell.innerHTML = Math.round(C) + '&deg; C';
+	          tempCell.innerHTML = Math.round(minC) + '&deg; C / ' + Math.round(maxC) + '&deg; C';
 	        } else {
-						tempCell.innerHTML = Math.round(F) + '&deg; F';
+	          tempCell.innerHTML = Math.round(minF) + '&deg; F / ' + Math.round(maxF) + '&deg; F';
 	        }
 
 					rainIconCell = document.createElement('td');
@@ -253,8 +257,10 @@ Module.register('MMM-3Day-Forecast', {
 	      for (var i = 0; i < 3; i++) {
 	        var forecastClass = '';
 	        var title = '';
-					var C = '--';
-					var F = '--';
+					var maxC = '--';
+					var maxF = '--';
+					var minC = '--';
+					var minF = '--';
 
 	        // Determine which day we are detailing
 	        switch (i) {
@@ -272,13 +278,22 @@ Module.register('MMM-3Day-Forecast', {
 	            break;
 	        }
 
+					//if (this.forecast[i].high !== '--') {
+					//	if (this.units === 'metric') {
+					//		C = this.forecast[i].high;
+					//		F = ((((C*9)/5)+32) * 10 ) / 10;
+					//	} else {
+					//		F = this.forecast[i].high;
+					//		C = ((((F-32)*5)/9) * 10 ) / 10;
+					//	}
+				  //}
 					if (this.forecast[i].high !== '--') {
 						if (this.units === 'metric') {
-							C = this.forecast[i].high;
-							F = ((((C*9)/5)+32) * 10 ) / 10;
+							maxC = this.forecast[i].high;
+							minC = this.forecast[i].low;
 						} else {
-							F = this.forecast[i].high;
-							C = ((((F-32)*5)/9) * 10 ) / 10;
+							maxF = this.forecast[i].high;
+							minF = this.forecast[i].low;
 						}
 					}
 
@@ -315,12 +330,16 @@ Module.register('MMM-3Day-Forecast', {
 
 	        tempText = document.createElement('span');
 	        tempText.className = 'normal';
-	        if (this.units === 'metric') {
-	          tempText.innerHTML = Math.round(C) + '&deg; C (' + Math.round(F) + '&deg; F)';
+	        //if (this.units === 'metric') {
+	        // tempText.innerHTML = Math.round(C) + '&deg; C (' + Math.round(F) + '&deg; F)';
+	        //} else {
+					//	tempText.innerHTML = Math.round(F) + '&deg; F (' + Math.round(C) + '&deg; C)';
+	        //}
+					if (this.units === 'metric') {
+	          tempCell.innerHTML = Math.round(minC) + '&deg; C / ' + Math.round(maxC) + '&deg; C';
 	        } else {
-						tempText.innerHTML = Math.round(F) + '&deg; F (' + Math.round(C) + '&deg; C)';
+	          tempCell.innerHTML = Math.round(minF) + '&deg; F / ' + Math.round(maxF) + '&deg; F';
 	        }
-
 	        tempBr = document.createElement('br');
 
 	        // Build up the details regarding precipitation %
