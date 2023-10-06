@@ -169,9 +169,9 @@ Module.register('MMM-3Day-Forecast', {
 					tempCell = document.createElement('td');
 					tempCell.className = 'detailText2';
 					if (this.units === 'metric') {
-	          tempCell.innerHTML = Math.round(minC) + '&deg; C / ' + Math.round(maxC) + '&deg; C';
+	          tempCell.innerHTML = Math.round(minC) + ' &deg;C / ' + Math.round(maxC) + ' &deg;C';
 	        } else {
-	          tempCell.innerHTML = Math.round(minF) + '&deg; F / ' + Math.round(maxF) + '&deg; F';
+	          tempCell.innerHTML = Math.round(minF) + ' &deg;F / ' + Math.round(maxF) + ' &deg;F';
 	        }
 
 					rainIconCell = document.createElement('td');
@@ -184,7 +184,7 @@ Module.register('MMM-3Day-Forecast', {
 
 					rainCell = document.createElement('td');
 					rainCell.className = 'detailText2';
-					rainCell.innerHTML = Math.round(this.forecast[i].pop * 100) + '%';
+					rainCell.innerHTML = Math.round(this.forecast[i].pop * 100) + ' %';
 
 					row3 = document.createElement('tr');
 
@@ -202,7 +202,7 @@ Module.register('MMM-3Day-Forecast', {
 
 					humidityCell = document.createElement('td');
 					humidityCell.className = 'detailText2';
-					humidityCell.innerHTML = Math.round(this.forecast[i].humid) + '%';
+					humidityCell.innerHTML = Math.round(this.forecast[i].humid) + ' %';
 
 					windIconCell = document.createElement('td');
 					windIconCell.className = 'detailIcon2';
@@ -336,9 +336,9 @@ Module.register('MMM-3Day-Forecast', {
 					//	tempText.innerHTML = Math.round(F) + '&deg; F (' + Math.round(C) + '&deg; C)';
 	        //}
 					if (this.units === 'metric') {
-	          tempText.innerHTML = Math.round(minC) + '&deg; C / ' + Math.round(maxC) + '&deg; C';
+	          tempText.innerHTML = Math.round(minC) + ' &deg;C / ' + Math.round(maxC) + ' &deg;C';
 	        } else {
-	          tempText.innerHTML = Math.round(minF) + '&deg; F / ' + Math.round(maxF) + '&deg; F';
+	          tempText.innerHTML = Math.round(minF) + ' &deg;F / ' + Math.round(maxF) + ' &deg;F';
 	        }
 	        tempBr = document.createElement('br');
 
@@ -350,7 +350,7 @@ Module.register('MMM-3Day-Forecast', {
 	        rainIcon.src = './modules/MMM-3Day-Forecast/images2/wet.png';
 
 	        rainText = document.createElement('span');
-	        rainText.innerHTML = Math.round(this.forecast[i].pop * 100) + '%';
+	        rainText.innerHTML = Math.round(this.forecast[i].pop * 100) + ' %';
 
 	        rainBr = document.createElement('br');
 
@@ -363,7 +363,7 @@ Module.register('MMM-3Day-Forecast', {
 
 	        humidText = document.createElement('span');
 	        humidText.className = 'normal';
-	        humidText.innerHTML = Math.round(this.forecast[i].humid) + '%';
+	        humidText.innerHTML = Math.round(this.forecast[i].humid) + ' %';
 
 	        humidBr = document.createElement('br');
 
