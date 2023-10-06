@@ -93,7 +93,7 @@ Module.register('MMM-3Day-Forecast', {
 
   generateIconSrc: function(icon) {
     return this.file("icons/" + this.iconsets[this.config.iconset].path + "/" +
-      this.iconMap[icon] + "." + this.iconsets[this.config.iconset].format);
+      icon + "." + this.iconsets[this.config.iconset].format);
   },
 
 
@@ -149,7 +149,7 @@ Module.register('MMM-3Day-Forecast', {
 					forecastIcon = document.createElement('img');
 	        forecastIcon.setAttribute('height', '50');
 	        forecastIcon.setAttribute('width', '50');
-	        forecastIcon.src = this.generateIconSrc(this.forecast[i].icon);
+	        forecastIcon.src = this.generateIconSrc(this.iconMap[this.forecast[i].icon]);
 
 					forecastTitleCell = document.createElement('td');
 					forecastTitleCell.className = 'forecastTitle2 bright';
@@ -180,7 +180,7 @@ Module.register('MMM-3Day-Forecast', {
 					rainIcon = document.createElement('img');
 	        rainIcon.setAttribute('height', '15');
 	        rainIcon.setAttribute('width', '15');
-	        rainIcon.src = './modules/MMM-3Day-Forecast/images2/wet.png';
+	        rainIcon.src = this.generateIconSrc('i-rain');
 
 					rainCell = document.createElement('td');
 					rainCell.className = 'detailText2';
@@ -309,7 +309,7 @@ Module.register('MMM-3Day-Forecast', {
 	        forecastIcon.className = 'forecastIcon';
 	        forecastIcon.setAttribute('height', '50');
 	        forecastIcon.setAttribute('width', '50');
-	        forecastIcon.src = this.generateIconSrc(this.forecast[i].icon);
+	        forecastIcon.src = this.generateIconSrc(this.iconMap[this.forecast[i].icon]);
 
 	        forecastText = document.createElement('div');
 	        forecastText.className = 'forecastText horizontalView bright';
@@ -347,7 +347,7 @@ Module.register('MMM-3Day-Forecast', {
 	        rainIcon.className = 'detailIcon';
 	        rainIcon.setAttribute('height', '15');
 	        rainIcon.setAttribute('width', '15');
-	        rainIcon.src = './modules/MMM-3Day-Forecast/images2/wet.png';
+	        rainIcon.src = this.generateIconSrc('i-rain');
 
 	        rainText = document.createElement('span');
 	        rainText.innerHTML = Math.round(this.forecast[i].pop * 100) + ' %';
