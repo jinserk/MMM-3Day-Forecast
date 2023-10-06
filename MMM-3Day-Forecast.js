@@ -8,15 +8,15 @@
 Module.register('MMM-3Day-Forecast', {
 
 	defaults: {
-    api_key:    '',
-    lat:		0.0,
-    lon:		0.0,
-		units:		'M',
-		lang:		'en',
+    api_key: '',
+    iconset: '1m',
+    lat: 0.0,
+    lon: 0.0,
+		units: 'M',
+		lang: 'en',
 		horizontalView:	false,
-    interval:   900000 // Every 15 mins
+    interval: 900000 // Every 15 mins
   },
-
 
   start:  function() {
     Log.log('Starting module: ' + this.name);
@@ -55,6 +55,45 @@ Module.register('MMM-3Day-Forecast', {
     // Make the initial request to the helper then set up the timer to perform the updates
     _this.sendSocketNotification('GET-3DAY-FORECAST', _this.url);
     setTimeout(_this.getWeatherData, _this.config.interval, _this);
+  },
+
+  iconsets: {
+    "1m": {path:"1m", format:"svg"},
+    "1c": {path:"1c", format:"svg"},
+    "2m": {path:"2m", format:"svg"},
+    "2c": {path:"2c", format:"svg"},
+    "3m": {path:"3m", format:"svg"},
+    "3c": {path:"3c", format:"svg"},
+    "4m": {path:"4m", format:"svg"},
+    "4c": {path:"4c", format:"svg"},
+    "5m": {path:"5m", format:"svg"},
+    "5c": {path:"5c", format:"svg"},
+  },
+
+  iconMap: {
+    "01d" : "clear-day",
+    "01n" : "clear-night",
+    "02d" : "partly-cloudy-day",
+    "02n" : "partly-cloudy-night",
+    "03d" : "cloudy",
+    "03n" : "cloudy",
+    "04d" : "cloudy",
+    "04n" : "cloudy",
+    "09d" : "rain",
+    "09n" : "rain",
+    "10d" : "rain",
+    "10n" : "rain",
+    "11d" : "thunderstorm",
+    "11n" : "thunderstorm",
+    "13d" : "snow",
+    "13n" : "snow",
+    "50d" : "fog",
+    "50n" : "fog"
+  },
+
+  generateIconSrc: function(icon) {
+    return this.file("icons/" + this.iconsets[this.config.iconset].path + "/" +
+      this.iconMap[icon] + "." + this.iconsets[this.config.iconset].format);
   },
 
 
@@ -369,45 +408,7 @@ Module.register('MMM-3Day-Forecast', {
       this.forecast = payload.forecast;
       this.updateDom(1000);
     }
-  }
-
-  iconsets: {
-    "1m": {path:"1m", format:"svg"},
-    "1c": {path:"1c", format:"svg"},
-    "2m": {path:"2m", format:"svg"},
-    "2c": {path:"2c", format:"svg"},
-    "3m": {path:"3m", format:"svg"},
-    "3c": {path:"3c", format:"svg"},
-    "4m": {path:"4m", format:"svg"},
-    "4c": {path:"4c", format:"svg"},
-    "5m": {path:"5m", format:"svg"},
-    "5c": {path:"5c", format:"svg"},
   },
 
-  iconMap: {
-    "01d" : "clear-day",
-    "01n" : "clear-night",
-    "02d" : "partly-cloudy-day",
-    "02n" : "partly-cloudy-night",
-    "03d" : "cloudy",
-    "03n" : "cloudy",
-    "04d" : "cloudy",
-    "04n" : "cloudy",
-    "09d" : "rain",
-    "09n" : "rain",
-    "10d" : "rain",
-    "10n" : "rain",
-    "11d" : "thunderstorm",
-    "11n" : "thunderstorm",
-    "13d" : "snow",
-    "13n" : "snow",
-    "50d" : "fog",
-    "50n" : "fog"
-  },
-
-  generateIconSrc: function(icon) {
-    return this.file("icons/" + this.iconsets[this.config.iconset].path + "/" +
-      this.iconMap[icon] + "." + this.iconsets[this.config.iconset].format);
-  },
 
 });
