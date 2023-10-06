@@ -336,9 +336,9 @@ Module.register('MMM-3Day-Forecast', {
 					//	tempText.innerHTML = Math.round(F) + '&deg; F (' + Math.round(C) + '&deg; C)';
 	        //}
 					if (this.units === 'metric') {
-	          tempCell.innerHTML = Math.round(minC) + '&deg; C / ' + Math.round(maxC) + '&deg; C';
+	          tempText.innerHTML = Math.round(minC) + '&deg; C / ' + Math.round(maxC) + '&deg; C';
 	        } else {
-	          tempCell.innerHTML = Math.round(minF) + '&deg; F / ' + Math.round(maxF) + '&deg; F';
+	          tempText.innerHTML = Math.round(minF) + '&deg; F / ' + Math.round(maxF) + '&deg; F';
 	        }
 	        tempBr = document.createElement('br');
 
