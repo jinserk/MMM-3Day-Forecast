@@ -164,7 +164,7 @@ Module.register('MMM-3Day-Forecast', {
 					tempIcon = document.createElement('img');
 	        tempIcon.setAttribute('height', '15');
 	        tempIcon.setAttribute('width', '15');
-	        tempIcon.src = './modules/MMM-3Day-Forecast/images2/high.png';
+	        tempIcon.src = this.generateIconSrc('i-temperature');
 
 					tempCell = document.createElement('td');
 					tempCell.className = 'detailText2';
@@ -327,7 +327,7 @@ Module.register('MMM-3Day-Forecast', {
 	        tempIcon.className = 'detailIcon';
 	        tempIcon.setAttribute('height', '15');
 	        tempIcon.setAttribute('width', '15');
-	        tempIcon.src = './modules/MMM-3Day-Forecast/images2/high.png';
+	        tempIcon.src = this.generateIconSrc('i-temperature');
 
 	        tempText = document.createElement('span');
 	        tempText.className = 'normal';
