@@ -198,7 +198,7 @@ Module.register('MMM-3Day-Forecast', {
 					humidityIcon = document.createElement('img');
 	        humidityIcon.setAttribute('height', '15');
 	        humidityIcon.setAttribute('width', '15');
-	        humidityIcon.src = './modules/MMM-3Day-Forecast/images2/humid.png';
+	        humidityIcon.src = this.generateIconSrc('i-humidity');
 
 					humidityCell = document.createElement('td');
 					humidityCell.className = 'detailText2';
@@ -210,7 +210,8 @@ Module.register('MMM-3Day-Forecast', {
 					windIcon = document.createElement('img');
 	        windIcon.setAttribute('height', '15');
 	        windIcon.setAttribute('width', '15');
-	        windIcon.src = './modules/MMM-3Day-Forecast/images/dir/' + this.forecast[i].wdir + '.png';
+	        //windIcon.src = './modules/MMM-3Day-Forecast/images/dir/' + this.forecast[i].wdir + '.png';
+	        windIcon.src = this.generateIconSrc('i-wind');
 
 					windCell = document.createElement('td');
 					windCell.className = 'detailText2';
@@ -359,7 +360,7 @@ Module.register('MMM-3Day-Forecast', {
 	        humidIcon.className = 'detailIcon';
 	        humidIcon.setAttribute('height', '15');
 	        humidIcon.setAttribute('width', '15');
-	        humidIcon.src = './modules/MMM-3Day-Forecast/images2/humid.png';
+	        humidIcon.src = this.generateIconSrc('i-humidity');
 
 	        humidText = document.createElement('span');
 	        humidText.className = 'normal';
@@ -372,7 +373,7 @@ Module.register('MMM-3Day-Forecast', {
 	        windIcon.className = 'detailIcon';
 	        windIcon.setAttribute('height', '15');
 	        windIcon.setAttribute('width', '15');
-	        windIcon.src = './modules/MMM-3Day-Forecast/images2/wind.png';
+	        windIcon.src = this.generateIconSrc('i-wind');
 
 	        windText = document.createElement('span');
 	        if (this.units === 'metric') {
