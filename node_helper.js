@@ -15,7 +15,6 @@ module.exports = NodeHelper.create({
     console.log('MMM-3Day-Forecast helper, started...');
   },
 
-
   getWeatherData: function(payload) {
 
     var _this = this;
@@ -29,40 +28,51 @@ module.exports = NodeHelper.create({
 
       // Check to see if we are error free and got an OK response
       if (!error && response.statusCode == 200) {
+        var tz_offset = result.timezone_offset;
+
+        var today = {};
         var tomorrow = {};
         var dayafter = {};
 
+        /*
         // Let's add todays weather based on the next few hours
         var today = {
-          icon:       result.list[0].weather[0].icon,
-          conditions: result.list[0].weather[0].description,
-          high:      	result.list[0].main.temp_max,
-          low:      	result.list[0].main.temp_min,
-          pop:        result.list[0].pop,
-          humid:      result.list[0].main.humidity,
-          wspd:      	result.list[0].wind.speed,
-          wdir:       _this.degToDir(result.list[0].wind.deg)
+          date:       date.fromUnixTime(result.dt + tz_offset),
+          icon:       result.current.weather[0].icon,
+          conditions: result.current.weather[0].description,
+          cur:        result.current.temp,
+          high:      	null,
+          low:      	null,
+          pop:        null,
+          humid:      result.current.humidity,
+          wspd:      	result.current.win_speed,
+          wdir:       _this.degToDir(result.current.wind_deg)
         };
+        */
 
         // Now let's go through the list
-        result.list.forEach((element, i) => {
+        result.daily.forEach((element, i) => {
           // The timestamp is in UTC so we need to localize for the systems TZ
-          var dateTime = date.fromUnixTime(element.dt);
+          var dateTime = date.fromUnixTime(element.dt + tz_offset);
 
-          // This will build tomorrows forecast
-          if ( date.isTomorrow(dateTime) ) {
+          if ( date.isToday(dateTime) ) {
+            _this.populateDay(today, element, dateTime);
+            today.date = dateTime;
+          }
+          else if ( date.isTomorrow(dateTime) ) {
             _this.populateDay(tomorrow, element, dateTime);
+            tomorrow.date = dateTime;
           }
-
-          // This will the day afters forecast
-          if (date.isSameDay(dateTime, date.addDays(now, 2)) ) {
+          else if (date.isSameDay(dateTime, date.addDays(now, 2)) ) {
             _this.populateDay(dayafter, element, dateTime);
+            dayafter.date = dateTime;
           }
 
-          forecast.push(today);
-          forecast.push(tomorrow);
-          forecast.push(dayafter);
         });
+
+        forecast.push(today);
+        forecast.push(tomorrow);
+        forecast.push(dayafter);
 
       } else {
         // In all other cases it's some other error
@@ -70,6 +80,7 @@ module.exports = NodeHelper.create({
           var day = {
             icon:       'blank',
             conditions: 'No weather data',
+            cur:        '--',
             high:      	'--',
             low:      	'--',
             pop:        '--',
@@ -94,52 +105,20 @@ module.exports = NodeHelper.create({
     }
   },
 
+
   populateDay: function(day, element, dateTime) {
-		// Check to see if we have any new highs in temp, chance of rain, humidity, and wind speed
-    day.high = this.getHighValue(day.high, element.main.temp_max);
-    day.low = this.getLowValue(day.low, element.main.temp_min);
-    day.pop = this.getHighValue(day.pop, element.pop);
-    day.humid = this.getHighValue(day.humid, element.main.humidity);
-    day.wspd = this.getHighValue(day.wspd, element.wind.speed);
-
-		// If we have a new windspeed high let's record the direction
-    if (day.wspd <= element.wind.speed) {
-      day.wdir = this.degToDir(element.wind.deg);
-    }
-
-		// If we have the weather over the midday period let's record the weather
-		var hour = date.getHours(dateTime);
-    if (hour >= 10 && hour <= 14) {
-      day.icon = element.weather[0].icon;
-      day.conditions = element.weather[0].description;
-    }
-
+    day.icon = element.weather[0].icon,
+    day.conditions = element.weather[0].description,
+    day.cur = null,
+    day.high = element.temp.max,
+    day.low = element.temp.min,
+    day.pop = element.pop,
+    day.humid = element.humidity,
+    day.wspd = element.wind_speed,
+    day.wdir = this.degToDir(element.wind_deg)
     return day;
   },
 
-  getHighValue: function(old, test) {
-    var result = undefined;
-
-    if (old === undefined) {
-      result = test;
-    } else {
-      result = old < test ? test : old;
-    }
-
-    return result;
-  },
-
-  getLowValue: function(old, test) {
-    var result = undefined;
-
-    if (old === undefined) {
-      result = test;
-    } else {
-      result = old > test ? test : old;
-    }
-
-    return result;
-  },
 
   degToDir: function(deg) {
     switch(deg) {

@@ -9,7 +9,6 @@ Module.register('MMM-3Day-Forecast', {
 
 	defaults: {
     api_key: '',
-    iconset: '1m',
     lat: 0.0,
     lon: 0.0,
 		units: 'M',
@@ -24,7 +23,11 @@ Module.register('MMM-3Day-Forecast', {
     // Set up the local values, here we construct the request url to use
     this.units = this.config.units==='I'?'imperial':'metric';
     this.loaded = false;
-		this.url = 'https://api.openweathermap.org/data/2.5/forecast?appid=' + this.config.api_key + '&lat=' + this.config.lat + '&lon=' + this.config.lon + '&units=' + this.units + '&lang=' + this.config.lang + '&cnt=24';
+		//this.url = 'https://api.openweathermap.org/data/2.5/forecast?appid=' + this.config.api_key + '&lat=' + this.config.lat + '&lon=' + this.config.lon + '&units=' + this.units + '&lang=' + this.config.lang + '&cnt=24';
+		this.url = 'https://api.openweathermap.org/data/3.0/onecall?appid=' + this.config.api_key
+		  + '&lat=' + this.config.lat + '&lon=' + this.config.lon
+		  + '&units=' + this.units + '&lang=' + this.config.lang
+		  + 'exclude=current,minutely,hourly,alerts';
     this.forecast = [];
 		this.horizontalView = this.config.horizontalView;
 
@@ -34,7 +37,7 @@ Module.register('MMM-3Day-Forecast', {
 
 
   getStyles: function() {
-    return ['3day_forecast.css', 'font-awesome.css'];
+    return ['font-awesome.css', '3day_forecast.css'];
   },
 
 
@@ -57,43 +60,25 @@ Module.register('MMM-3Day-Forecast', {
     setTimeout(_this.getWeatherData, _this.config.interval, _this);
   },
 
-  iconsets: {
-    "1m": {path:"1m", format:"svg"},
-    "1c": {path:"1c", format:"svg"},
-    "2m": {path:"2m", format:"svg"},
-    "2c": {path:"2c", format:"svg"},
-    "3m": {path:"3m", format:"svg"},
-    "3c": {path:"3c", format:"svg"},
-    "4m": {path:"4m", format:"svg"},
-    "4c": {path:"4c", format:"svg"},
-    "5m": {path:"5m", format:"svg"},
-    "5c": {path:"5c", format:"svg"},
-  },
-
   iconMap: {
-    "01d" : "clear-day",
-    "01n" : "clear-night",
-    "02d" : "partly-cloudy-day",
-    "02n" : "partly-cloudy-night",
-    "03d" : "cloudy",
-    "03n" : "cloudy",
-    "04d" : "cloudy",
-    "04n" : "cloudy",
-    "09d" : "rain",
-    "09n" : "rain",
-    "10d" : "rain",
-    "10n" : "rain",
-    "11d" : "thunderstorm",
-    "11n" : "thunderstorm",
-    "13d" : "snow",
-    "13n" : "snow",
-    "50d" : "fog",
-    "50n" : "fog"
-  },
-
-  generateIconSrc: function(icon) {
-    return this.file("icons/" + this.iconsets[this.config.iconset].path + "/" +
-      icon + "." + this.iconsets[this.config.iconset].format);
+    "01d" : "sun",
+    "01n" : "moon",
+    "02d" : "cloud-sun",
+    "02n" : "cloud-moon",
+    "03d" : "cloud",
+    "03n" : "cloud",
+    "04d" : "cloud",
+    "04n" : "cloud",
+    "09d" : "cloud-showers-heavy",
+    "09n" : "cloud-showers-heavy",
+    "10d" : "cloud-sun-rain",
+    "10n" : "cloud-moon-rain",
+    "11d" : "cloud-bolt",
+    "11n" : "cloud-bolt",
+    "13d" : "snowflake",
+    "13n" : "snowflake",
+    "50d" : "smog",
+    "50n" : "smog"
   },
 
 
@@ -249,6 +234,7 @@ Module.register('MMM-3Day-Forecast', {
 				}
 
 			} else {
+			  console.log(this.forecast);
 	      wrapper = document.createElement('table');
 			  wrapper.className = 'forecast small';
 
@@ -306,11 +292,10 @@ Module.register('MMM-3Day-Forecast', {
 	        forcastTitle.className = 'forecastTitle';
 	        forcastTitle.innerHTML = title;
 
-	        forecastIcon = document.createElement('img');
-	        forecastIcon.className = 'forecastIcon';
+	        forecastIcon = document.createElement('i');
+	        forecastIcon.className = 'fa fa-' + this.iconMap[this.forecast[i].icon] + ' fa-2x forecastIcon2';
 	        forecastIcon.setAttribute('height', '50');
 	        forecastIcon.setAttribute('width', '50');
-	        forecastIcon.src = this.generateIconSrc(this.iconMap[this.forecast[i].icon]);
 
 	        forecastText = document.createElement('div');
 	        forecastText.className = 'forecastText horizontalView bright';
@@ -323,11 +308,10 @@ Module.register('MMM-3Day-Forecast', {
 	        forecastDetail.className = 'forecastDetail';
 
 	        // Build up the details regarding temprature
-	        tempIcon = document.createElement('img');
-	        tempIcon.className = 'detailIcon';
+	        tempIcon = document.createElement('i');
+	        tempIcon.className = 'fa fa-temperature-half fa-fw detailIcon2';
 	        tempIcon.setAttribute('height', '15');
 	        tempIcon.setAttribute('width', '15');
-	        tempIcon.src = this.generateIconSrc('i-temperature');
 
 	        tempText = document.createElement('span');
 	        tempText.className = 'normal';
@@ -344,11 +328,10 @@ Module.register('MMM-3Day-Forecast', {
 	        tempBr = document.createElement('br');
 
 	        // Build up the details regarding precipitation %
-	        rainIcon = document.createElement('img');
-	        rainIcon.className = 'detailIcon';
+	        rainIcon = document.createElement('i');
+	        rainIcon.className = 'fa fa-umbrella fa-fw detailIcon2';
 	        rainIcon.setAttribute('height', '15');
 	        rainIcon.setAttribute('width', '15');
-	        rainIcon.src = this.generateIconSrc('i-rain');
 
 	        rainText = document.createElement('span');
 	        rainText.innerHTML = Math.round(this.forecast[i].pop * 100) + ' %';
@@ -356,11 +339,10 @@ Module.register('MMM-3Day-Forecast', {
 	        rainBr = document.createElement('br');
 
 	        // Build up the details regarding humidity %
-	        humidIcon = document.createElement('img');
-	        humidIcon.className = 'detailIcon';
+	        humidIcon = document.createElement('i');
+	        humidIcon.className = 'fa fa-droplet fa-fw detailIcon2';
 	        humidIcon.setAttribute('height', '15');
 	        humidIcon.setAttribute('width', '15');
-	        humidIcon.src = this.generateIconSrc('i-humidity');
 
 	        humidText = document.createElement('span');
 	        humidText.className = 'normal';
@@ -369,11 +351,10 @@ Module.register('MMM-3Day-Forecast', {
 	        humidBr = document.createElement('br');
 
 	        // Build up the details regarding wind
-	        windIcon = document.createElement('img');
-	        windIcon.className = 'detailIcon';
+	        windIcon = document.createElement('i');
+	        windIcon.className = 'fa fa-wind fa-fw detailIcon2';
 	        windIcon.setAttribute('height', '15');
 	        windIcon.setAttribute('width', '15');
-	        windIcon.src = this.generateIconSrc('i-wind');
 
 	        windText = document.createElement('span');
 	        if (this.units === 'metric') {
